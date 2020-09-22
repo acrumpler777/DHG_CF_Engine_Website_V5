@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'gi_vnyc=7@o=-av*m&p5qx=pqtm!rn!3#!ww3sy3u-tkf@y%#!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # todo change when in production
+DEBUG = False  # todo change when in production
 
 ALLOWED_HOSTS = ['*']  # todo change when we get website
 
