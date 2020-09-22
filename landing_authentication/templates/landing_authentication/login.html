@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+{% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>DHG | Login</title>
+
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/images/favicon-16x16.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static '/images/favicon.ico' %}">
+    <link rel="manifest" href="{% static '/bootstrap_theme/assets/img/favicons/manifest.json' %}">
+    <meta name="msapplication-TileImage" content="{% static '/bootstrap_theme/assets/img/favicons/mstile-150x150.png' %}">
+    <meta name="theme-color" content="#ffffff">
+    <script src="{% static '/bootstrap_theme/assets/js/config.navbar-vertical.js' %}"></script>
+
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link href="{% static '/bootstrap_theme/assets/css/theme.css' %}" rel="stylesheet">
+
+  </head>
+
+
+  <body>
+
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+      <div class="bg-holder overlay" style="background-image:url('/static/images/header4.jpg');background-position: center bottom;"></div>
+      <div class="container">
+        <div class="row flex-center min-vh-100 py-6">
+          <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+            <div class="card">
+              <div class="card-body p-4 p-sm-5">
+                <a class="d-flex flex-center mb-2" href="{%url 'landing' %}"><img class="mr-0" src="{% static '/images/DHG-logo_cropped.png' %}" alt="" width="146" /></a>
+                <div class="row text-left justify-content-between align-items-center mb-2">
+                  <div class="mb-3">
+                    {% for message in messages %}
+                      <div role="alert" class="alert alert-success d-flex justify-content-center align-items-center justify-content-xl-center" style="color: rgb(87,21,69);background-color: rgb(232,187,187);text-align: center;border-color: rgba(87,21,69,0);height: 35px; margin-bottom:-5px; margin-top:15px;"><span class="d-flex d-xl-flex justify-content-xl-center align-items-xl-center" style="font-size: 12px;color: rgb(0,0,0);">{{message}}</span></div>
+                    {% endfor %}
+                  </div>
+                  <div class="col-auto">
+                    <h5>Log in</h5>
+                  </div>
+                  <div class="col-auto">
+                    <p class="fs--1 text-600 mb-0">or <a href="{% url 'register' %}">Create an account</a></p>
+                  </div>
+                </div>
+                <form method="post">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <input class="form-control" type="text" required="required" name="username" placeholder="Username" />
+                  </div>
+                  <div class="mb-3">
+                    <input class="form-control" type="password" required="required"  name="password" placeholder="Password" />
+                  </div>
+                  <div class="mb-3">
+                    <button class="btn btn-primary btn-block mt-3" type="submit" name="submit">Log in</button>
+                  </div>
+                </form>
+                <div class="input-group mb-0">
+                  <div class="row g-2">
+                    <div class="text-center" style="margin-top: -3px;"><a class="fs--1" href="{% url 'password_reset' %}">Forgot Password?</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="{% static '/bootstrap_theme/vendors/popper/popper.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/anchorjs/anchor.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/is/is.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/fontawesome/all.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/lodash/lodash.min.js' %}"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    <script src="{% static '/bootstrap_theme/assets/js/theme.js' %}"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+  </body>
+
+</html>

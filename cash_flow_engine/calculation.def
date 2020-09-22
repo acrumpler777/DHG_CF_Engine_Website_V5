@@ -1,0 +1,17 @@
+LIBRARY calculation.dll
+
+EXPORTS
+DllMain
+__fini_array_end
+__fini_array_start
+__init_array_end
+__init_array_start
+__preinit_array_end
+__preinit_array_start
+_dllstart
+_edata
+_end
+_etext
+main
+max
+min

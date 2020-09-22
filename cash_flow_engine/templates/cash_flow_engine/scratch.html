@@ -1,0 +1,222 @@
+{% extends 'cash_flow_engine/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <div class="align-items-center row flex-between-center">
+
+              <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Loan Summary</h5>
+
+
+            <div class="d-flex flex-grow-1 justify-content-end">
+                    <div style="margin-right:9px;">
+                      <select class="form-select form-select-sm mb-3" id="dashboard-chart-select">
+                        {% if files %}
+                            {% for file in files %}
+                              <option value="all">{{file.filetxt}}</option>
+                            {% endfor %}
+                        {% else %}
+                          <option value="failed">No Files Uploaded</option>
+                        {% endif %}
+                      </select>
+                    </div>
+                      <a href="{% url 'exportportfolio' %}">
+                          <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span> Export</button></a>
+            </div>
+          
+        </div>
+    </div>
+
+
+    <div class="card-body px-0 py-0">
+      <div class="table-responsive">
+
+          <div id="tableExample" data-list='{"valueNames":["loan","code","months","ecf","dcf"],"page":5,"pagination":true}'>
+            <table class="table table-sm fs--1 mb-0 table-hover table table-striped">
+              <thead class="bg-200 text-900">
+                <tr>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="loan">Loan #</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="code">Call Code</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="months">Months to Maturity</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="ecf">Total ECF</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="dcf">Total DCF</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+
+                  {% for  index,row in summary.iterrows %}
+                    <tr>
+                      <td class="loan align-middle white-space-nowrap text-center"><a href="{% url 'individualcf' row.Note_Number %}"><strong>{{ row.Note_Number }}</strong></a></td>
+                      <td class="code align-middle white-space-nowrap text-center">{{ row.Call_Code }}</td>
+                      <td class="months align-middle white-space-nowrap text-center">{{ row.Months_To_Maturity }}</td>
+                      <td class="ecf align-middle white-space-nowrap text-center">${{ row.Expected_Cash_Flows|floatformat:"2"|intcomma }}</td>
+                      <td class="dcf align-middle white-space-nowrap text-center">${{ row.PV_Cash_Flows|floatformat:"2"|intcomma }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+
+              <div class="card-footer">
+                <div class="row align-items-center">
+                  <div class="pagination d-none"></div>
+                  <div class="col">
+                    <p class="mb-0 fs--1">
+                      <span class="d-none d-sm-inline-block mr-1" data-list-info="data-list-info"></span>
+                      <span class="d-none d-sm-inline-block"> &mdash; </span>
+                      <a class="font-weight-semi-bold" href="#!" data-list-view="*">View all<span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span></a>
+                    </p>
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-sm" type="button" data-list-pagination="prev"><span>Previous</span></button>
+                    <button class="btn btn-sm px-4 ml-2" type="button" data-list-pagination="next"><span>Next</span></button>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+option = {
+
+    color: ['#2c7be5', '#d8e2ef'],
+    dataset: {
+        dimensions: ['product', 'Total ECF $', 'Total DCF $'],
+        source: data
+    },
+    tooltip: {
+        trigger: 'item',
+        padding: [7, 10],
+        backgroundColor: '#fff',
+        borderColor: '#d8e2ef',
+        borderWidth: 1,
+        textStyle: {
+          color: '#0b1727'
+        },
+        transitionDuration: 0,
+        position: function position(pos, params, dom, rect, size) {
+          return getPosition(pos, params, dom, rect, size);
+        },
+        formatter: function formatter(params) {
+          return "<div class=\"font-weight-semi-bold\">".concat(params.seriesName, "</div><div class=\"fs--1 text-600\"><strong>").concat(params.name, ":</strong> ").concat(params.value[params.componentIndex + 1], "</div>");
+        }
+    },
+    legend: {
+        data: ['Total ECF $', 'Total DCF $'],
+        left: 'left',
+        itemWidth: 10,
+        itemHeight: 10,
+        borderRadius: 0,
+        icon: 'circle',
+        inactiveColor: '#9da9bb',
+        textStyle: {
+            color: '#5e6e82'
+        }
+    },
+
+   xAxis: {
+        type: 'category',
+        axisLabel: {
+            color: '#344050'
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#d8e2ef',
+            type: 'dashed'
+          }
+        },
+        axisTick: false,
+        boundaryGap: true
+      },
+   yAxis: {
+
+        axisPointer: {
+          type: 'none'
+        },
+        axisTick: 'none',
+        splitLine: {
+          lineStyle: {
+            color: '#d8e2ef',
+            type: 'dashed'
+          }
+        },
+
+        axisLine: {
+          show: false
+        },
+        axisLabel: {
+            color: '#344050'
+
+        }
+   },
+   series: [{
+
+        type: 'bar',
+        barWidth: '18%',
+        barGap: '30%',
+        label: {
+          normal: {
+            show: false
+          }
+        },
+        z: 10,
+        itemStyle: {
+          normal: {
+            barBorderRadius: [10, 10, 0, 0],
+            color: '#2c7be5'
+          }
+        }
+      }, {
+        type: 'bar',
+        barWidth: '18%',
+        barGap: '30%',
+        label: {
+          normal: {
+            show: false
+          }
+        },
+        itemStyle: {
+          normal: {
+            barBorderRadius: [4, 4, 0, 0],
+            color: '#d8e2ef'
+          }
+        }
+   }],
+   grid: {
+        right: '0',
+        left: '30px',
+        bottom: '10%',
+        top: '20%'
+   }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

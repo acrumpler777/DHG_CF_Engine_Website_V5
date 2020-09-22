@@ -1,0 +1,228 @@
+{% extends 'cash_flow_engine/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+          <div class="card mb-3">
+              <div class="card-body p-3">
+                  <div class="chartjs-size-monitor">
+                      <div class="chartjs-size-monitor-expand">
+                          <div class></div>
+                      </div>
+                      <div class="chartjs-size-montor-shrink">
+                          <div class></div>
+                      </div>
+                  </div>
+                  <div class="row align-items-center flex-row">
+                        <div class="col-6 text-nowrap  align-items-center pr-0">
+                          <h4 class=" mb-1">Dashboard</h4>
+
+                          <h6 class="fs--1">Total ECF and DCF by Call Code</h6>
+                        </div>
+                        <div class="col-6 col-sm-auto ml-auto text-right">
+                          <select class="form-select form-select-sm mb-3" id="dashboard-chart-select">
+                            {% if files %}
+<!--                                {% for file in files %}-->
+                                  <option value="all">{{file.filetxt}}</option>
+<!--                                {% endfor %}-->
+                            {% else %}
+                              <option value="failed">No Files Uploaded</option>
+                            {% endif %}
+                          </select>
+                        </div>
+
+
+                        <div id="$charttest"  style="height: 400px;"></div>
+                  </div>
+<!--                <div class="echart-bar-top-products" style="height: 400px;" data-echart-responsive="true"></div> has something to do with data-echart-responsive-->
+              </div>
+          </div>
+
+          <div class="card mb-3">
+            <div class="card-body p-3">
+              <p class="fs--1 mb-0"><a href="{% url 'table' %}"><span class="fas fa-table"></span> Click the link here to view in-depth portfolio and loan-level views of the <strong>
+                  {% if files %}
+                      {{numberloans|intcomma}}
+                  {% else %}
+                    N/A
+                  {% endif %}
+                  loans </strong>in this portfolio.</a> </p>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-sm-6 col-md-4">
+              <div class="card overflow-hidden" style="min-width: 12rem">
+                <div class="bg-holder bg-card" style="background-image:url('/static/bootstrap_theme/assets/img/illustrations/corner-2.png');">
+                </div>
+                <!--/.bg-holder-->
+
+                <div class="card-body position-relative">
+                  <h6>Total ECF</h6>
+                   {% if files %}
+                        <div class="display-4 fs-4 mb-2 font-weight-normal font-sans-serif text-warning" data-countup='{"endValue":{{ total_ecf }},"decimalPlaces":2, "prefix":"$"}'>0</div>
+                    {% else %}
+                    N/A
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="card overflow-hidden" style="min-width: 12rem">
+                <div class="bg-holder bg-card" style="background-image:url('/static/bootstrap_theme/assets/img/illustrations/corner-2.png');">
+                </div>
+                <!--/.bg-holder-->
+
+                <div class="card-body position-relative">
+                  <h6>Loan Count</h6>
+                    {% if files %}
+                        <div class="display-4 fs-4 mb-2 font-weight-normal font-sans-serif text-info" data-countup='{"endValue":{{ numberloans }},"decimalPlaces":0,"suffix":" Loans"}'>0</div>
+                    {% else %}
+                    N/A
+                    {% endif %}
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+                <div class="bg-holder bg-card" style="background-image:url('/static/bootstrap_theme/assets/img/illustrations/corner-2.png');">
+                </div>
+                <!--/.bg-holder-->
+
+                <div class="card-body position-relative">
+                  <h6>Total NPV</h6>
+                  {% if files %}
+                    <div class="display-4 fs-4 mb-2 font-weight-normal font-sans-serif text-success" data-countup='{"endValue":{{ total_dcf }},"decimalPlaces":2, "prefix":"$"}'>0</div>
+                  {% else %}
+                    N/A
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+<script>
+var $chart = document.getElementById('$charttest');
+var data = [['product', 'ECF', 'DCF'],['1a', '1001', '45']];
+var myChart = echarts.init($chart);
+
+option = {
+    color: ['#2c7be5', '#d8e2ef'],
+    tooltip: {
+        trigger: 'item',
+        padding: [7, 10],
+        backgroundColor: '#fff',
+        borderColor: '#d8e2ef',
+        borderWidth: 1,
+        textStyle: {
+          color: '#0b1727'
+        },
+        transitionDuration: 0,
+        position: function position(pos, params, dom, rect, size) {
+          return getPosition(pos, params, dom, rect, size);
+        },
+    },
+    legend: {
+        data: ['Total ECF $', 'Total DCF $'],
+        left: 'left',
+        itemWidth: 10,
+        itemHeight: 10,
+        borderRadius: 0,
+        icon: 'circle',
+        inactiveColor: '#9da9bb',
+        textStyle: {
+            color: '#5e6e82'
+        }
+    },
+    xAxis: {
+        type: 'category',
+        data: {{call_code|safe}},
+        axisLabel: {
+                color: '#344050'
+        },
+        axisLine: {
+          lineStyle: {
+            color: '#d8e2ef',
+            type: 'dashed'
+          }
+        },
+        axisTick: false,
+        boundaryGap: true
+    },
+    yAxis: {
+        type: 'value',
+        axisPointer: {
+          type: 'none'
+        },
+        axisTick: 'none',
+        splitLine: {
+          lineStyle: {
+            color: '#d8e2ef',
+            type: 'dashed'
+          }
+        },
+        axisLine: {
+          show: false
+        },
+        axisLabel: {
+                    formatter: '${value}',
+                    color: '#344050'
+                }
+    },
+    series: [{
+            name: 'Total ECF $',
+            type: 'bar',
+            data: {{ecf|safe}},
+            barWidth: '18%',
+            barGap: '30%',
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            z: 10,
+            itemStyle: {
+              normal: {
+                barBorderRadius: [10, 10, 0, 0],
+                color: '#2c7be5'
+              }
+            }
+        }, {
+            name: 'Total DCF $',
+            type: 'bar',
+            data: {{dcf|safe}},
+            barWidth: '18%',
+            barGap: '30%',
+            label: {
+              normal: {
+                show: false
+              }
+            },
+            itemStyle: {
+              normal: {
+                barBorderRadius: [4, 4, 0, 0],
+                color: '#d8e2ef'
+              }
+            }
+
+    }],
+    grid: {
+        right: '20px',
+        left: '80px',
+        bottom: '10%',
+        top: '10%'
+   }
+};
+
+myChart.setOption(option);
+window.onresize = function() {
+  myChart.resize();
+};
+
+
+
+</script>
+
+{% endblock %}

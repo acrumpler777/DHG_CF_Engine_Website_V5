@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+{% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>DHG | Cash Flow Engine</title>
+
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/images/favicon-16x16.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static '/images/favicon.ico' %}">
+    <link rel="manifest" href="{% static '/bootstrap_theme/assets/img/favicons/manifest.json' %}">
+    <meta name="msapplication-TileImage" content="{% static '/bootstrap_theme/assets/img/favicons/mstile-150x150.png' %}">
+    <meta name="theme-color" content="#ffffff">
+    <script src="{% static '/bootstrap_theme/assets/js/config.navbar-vertical.js' %}"></script>
+
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+
+
+    <link href="{% static '/bootstrap_theme/vendors/leaflet/leaflet.css' %}" rel="stylesheet">
+    <link href="{% static '/bootstrap_theme/vendors/leaflet.markercluster/MarkerCluster.css' %}" rel="stylesheet">
+    <link href="{% static '/bootstrap_theme/vendors/leaflet.markercluster/MarkerCluster.Default.css' %}" rel="stylesheet">
+    <link href="{% static '/bootstrap_theme/vendors/dropzone/dropzone.min.css' %}" rel="stylesheet">
+    <link href="{% static '/bootstrap_theme/vendors/prism/prism-okaidia.css' %}" rel="stylesheet">
+    <link href="{% static '/bootstrap_theme/vendors/flatpickr/flatpickr.min.css' %}" rel="stylesheet">
+    <link href="{% static '/bootstrap_theme/vendors/glightbox/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static '/bootstrap_theme/vendors/plyr/plyr.css' %}" rel="stylesheet">
+    <script src="{% static '/bootstrap_theme/vendors/echarts/echarts.min.js' %}"></script>
+
+    <link href="{% static '/bootstrap_theme/assets/css/theme.css' %}" rel="stylesheet">
+  </head>
+
+
+  <body>
+
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+      <div class="container">
+        <nav class="navbar navbar-light navbar-vertical navbar-expand-xl">
+          <div class="d-flex align-items-center">
+            <div class="toggle-icon-wrapper">
+              <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle" data-toggle="tooltip" data-placement="left" ><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+            </div><a class="navbar-brand" href="{% url 'home' %}">
+              <div class="d-flex align-items-center py-4"><img class="mr-2" src="{% static '/images/DHG-logo_cropped.png' %}" alt="" width="60" /></div>
+            </a>
+          </div>
+          <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+            <div class="navbar-vertical-content perfect-scrollbar scrollbar">
+              <ul class="navbar-nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-home"></span></span><span class="nav-link-text"> Home</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'loanupload' %}">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-upload"></span></span><span class="nav-link-text"> Loan Upload</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="nav-item"><a class="nav-link dropdown-indicator" href="#analyze" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="e-commerce">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-poll"></span></span><span class="nav-link-text"> Analyze</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="analyze" data-parent="#navbarVerticalCollapse">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'table' %}">Table</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div class="content">
+          <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand">
+            <button class="btn navbar-toggler-humburger-icon navbar-toggler mr-1 mr-sm-3" type="button" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+
+            <a class="navbar-brand mr-1 mr-sm-3" href="{% url 'home' %}">
+              <div class="d-flex align-items-center"><img class="mr-2" src="{% static '/images/DHG-logo_cropped.png' %}" alt="" width="60" />
+              </div>
+            </a>
+            <ul class="navbar-nav navbar-nav-icons ml-auto flex-row align-items-center">
+              <li class="nav-item dropdown dropdown-on-hover"><a class="nav-link pr-0" id="navbarDropdownUser" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <div class="avatar avatar-xl">
+                    <div class="avatar-name rounded-circle" style="background-color: rgb(29,128,195); margin-top: 5px;"><span>{{request.user.first_name.0}}{{request.user.last_name.0}}</span></div>
+                  </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right py-0" aria-labelledby="navbarDropdownUser">
+                  <div class="bg-white rounded-lg py-2">
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </nav>
+          {% block content %}
+
+
+          {% endblock %}
+          <footer>
+            <div class="row g-0 justify-content-between fs--1 mt-4 mb-3">
+              <div class="col-12 col-sm-auto text-center">
+                <p class="mb-0 text-600">Thank you for visiting the DHG Cash Flow Engine <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> 2020 &copy; <a href="https://www.dhg.com/" target="https://www.dhg.com/">DHG</a></p>
+              </div>
+              <div class="col-12 col-sm-auto text-center">
+                <p class="mb-0 text-600">v1.0.0-beta1</p>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="{% static '/bootstrap_theme/vendors/popper/popper.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/anchorjs/anchor.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/is/is.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/fontawesome/all.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/lodash/lodash.min.js' %}"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    <script src="{% static '/bootstrap_theme/vendors/list.js/list.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/glightbox/glightbox.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/flatpickr/flatpickr.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/echarts/echarts.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/plyr/plyr.polyfilled.min.js' %}"> </script>
+    <script src="{% static '/bootstrap_theme/vendors/chart/Chart.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/leaflet/leaflet.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/leaflet.markercluster/leaflet.markercluster.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/leaflet.tilelayer.colorfilter/leaflet-tilelayer-colorfilter.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/countup/countUp.umd.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/prism/prism.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/dropzone/dropzone.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/progressbar/progressbar.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/chart/Chart.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/assets/js/theme.js' %}"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+  </body>
+
+</html>

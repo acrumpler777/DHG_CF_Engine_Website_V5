@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+{% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>DHG | Logout</title>
+
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static '/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/images/favicon-16x16.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static '/images/favicon.ico' %}">
+    <link rel="manifest" href="{% static '/bootstrap_theme/assets/img/favicons/manifest.json' %}">
+    <meta name="msapplication-TileImage" content="{% static '/bootstrap_theme/assets/img/favicons/mstile-150x150.png' %}">
+    <meta name="theme-color" content="#ffffff">
+    <script src="{% static '/bootstrap_theme/assets/js/config.navbar-vertical.js' %}"></script>
+
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link href="{% static '/bootstrap_theme/assets/css/theme.css' %}" rel="stylesheet">
+
+  </head>
+
+
+  <body>
+
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+      <div class="bg-holder overlay" style="background-image:url('/static/images/header4.jpg');background-position: center bottom;"></div>
+      <div class="container">
+        <div class="row flex-center min-vh-100 py-6">
+          <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+            <div class="card">
+              <div class="card-body p-4 p-sm-5">
+                <a class="d-flex flex-center mb-4" href="{%url 'landing' %}"><img class="mr-0" src="{% static '/images/DHG-logo_cropped.png' %}" alt="" width="146" /></a>
+                <div class="text-center">
+                  <h4>See you again!</h4>
+                  <p>Thanks for using the DHG Cash Flow Engine. You are now successfully signed out.</p><a class="btn btn-primary btn-sm mt-3" href="/"><span class="fas fa-chevron-left mr-1" data-fa-transform="shrink-4 down-1"></span>Return to Login</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="{% static '/bootstrap_theme/vendors/popper/popper.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/anchorjs/anchor.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/is/is.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/fontawesome/all.min.js' %}"></script>
+    <script src="{% static '/bootstrap_theme/vendors/lodash/lodash.min.js' %}"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    <script src="{% static '/bootstrap_theme/assets/js/theme.js' %}"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:100,200,300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+  </body>
+
+</html>

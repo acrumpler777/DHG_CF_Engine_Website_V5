@@ -1,0 +1,83 @@
+{% extends 'cash_flow_engine/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<div class="card mb-3">
+    <div class="card-header align-items-center">
+        <div class="row align-items-center flex-row">
+          <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
+            <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Loan Summary</h5>
+          </div>
+          <div class="d-flex flex-nowrap  col-8 col-sm-auto ml-auto text-right">
+            <div class="flex-nowrap text-nowrap" style="margin-right:9px;">
+              <select class="form-select form-select-sm" id="dashboard-chart-select">
+                      {% if files %}
+                          {% for file in files %}
+                            <option value="all">{{file.filetxt}}</option>
+                          {% endfor %}
+                      {% else %}
+                        <option value="failed">No Files Uploaded</option>
+                      {% endif %}
+                    </select>
+            </div>
+            {% if files %}
+                <a class="flex-nowrap text-nowrap"  href="{% url 'exportportfolio' %}">
+                    <button class="btn btn-falcon-default flex-nowrap btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span> Export</button></a>
+            {% else %}
+            {% endif %}
+          </div>
+        </div>
+    </div>
+
+
+    <div class="card-body px-0 py-0">
+      <div class="table-responsive">
+
+          <div id="tableExample" data-list='{"valueNames":["loan","code","months","ecf","dcf"],"page":50,"pagination":true}'>
+            <table class="table table-sm fs--1 mb-0 table-hover table table-striped">
+              <thead class="bg-200 text-900">
+                <tr>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="loan">Loan #</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="code">Call Code</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="months">Months to Maturity</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="ecf">Total ECF</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="dcf">Total DCF</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+
+                  {% for  index,row in summary.iterrows %}
+                    <tr>
+                      <td class="loan align-middle white-space-nowrap text-center"><a href="{% url 'individualcf' row.Note_Number %}"><strong>{{ row.Note_Number }}</strong></a></td>
+                      <td class="code align-middle white-space-nowrap text-center">{{ row.Call_Code }}</td>
+                      <td class="months align-middle white-space-nowrap text-center">{{ row.Months_To_Maturity }}</td>
+                      <td class="ecf align-middle white-space-nowrap text-center">${{ row.Expected_Cash_Flows|floatformat:"2"|intcomma }}</td>
+                      <td class="dcf align-middle white-space-nowrap text-center">${{ row.PV_Cash_Flows|floatformat:"2"|intcomma }}</td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+
+              <div class="card-footer">
+                <div class="row align-items-center">
+                  <div class="pagination d-none"></div>
+                  <div class="col">
+                    <p class="mb-0 fs--1">
+                      <span class="d-none d-sm-inline-block mr-1" data-list-info="data-list-info"></span>
+                      <span class="d-none d-sm-inline-block"> &mdash; </span>
+                      <a class="font-weight-semi-bold" href="#!" data-list-view="*">View all<span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span></a>
+                    </p>
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-sm" type="button" data-list-pagination="prev"><span>Previous</span></button>
+                    <button class="btn btn-sm px-4 ml-2" type="button" data-list-pagination="next"><span>Next</span></button>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+ </div>
+
+{% endblock %}

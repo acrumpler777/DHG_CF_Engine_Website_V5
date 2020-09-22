@@ -1,0 +1,66 @@
+{% extends 'cash_flow_engine/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<div class="card mb-3">
+
+  <div class="card-header">
+    <div class="row flex-between-center">
+      <div class="col-6 col-sm-auto d-flex align-items-center pr-0">
+        <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Loan #{{ loan_number }}</h5>
+      </div>
+      <div class="col-6 col-sm-auto ml-auto text-right pl-0">
+        <a href="{% url 'table' %}" style="margin-right:7px;">
+          <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-angle-left" data-fa-transform="shrink-3 down-2"></span> Back</button></a>
+        <a href="{% url 'exportindividualcf' loan_number %}">
+          <button class="btn btn-falcon-default btn-sm" type="button"><span  class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span> Export</button></a>
+      </div>
+    </div>
+  </div>
+  <div class="card-body px-0 py-0">
+    <div class="table-responsive">
+       <div id="tableExample" data-list='{"valueNames":["period","balance","default","principal","interest","prepay","recovery","ecf","pv"],"page":1000,"pagination":false}'>
+          <table class="table table-sm fs--1 mb-0 table-hover table table-striped">
+            <thead class="bg-200 text-900">
+              <tr>
+                <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="period">Period</th>
+                <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="balance" >Balance</th>
+                <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="default">Default</th>
+                <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="principal">Principal</th>
+                <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="interest">Interest</th>
+                <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="prepay">Prepay</th>
+                <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="recovery">Recovery</th>
+                <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="ecf">ECF</th>
+                <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="pv">PV</th>
+              </tr>
+            </thead>
+            <tbody class="list">
+              {% for  index,row in cashflow.iterrows %}
+                <tr class="btn-reveal-trigger">
+                  <td class="period align-middle white-space-nowrap text-center">{{ row.Period|floatformat:"0" }}</td>
+                  <td class="balance align-middle white-space-nowrap text-center">${{ row.Expected_Beginning_Principal|floatformat:"2"|intcomma }}</td>
+                  <td class="default align-middle white-space-nowrap text-center">${{ row.Expected_Default|floatformat:"2"|intcomma }}</td>
+                  <td class="principal align-middle white-space-nowrap text-center">${{ row.Expected_Principal|floatformat:"2"|intcomma }}</td>
+                  <td class="interest align-middle white-space-nowrap text-center">${{ row.Expected_Interest|floatformat:"2"|intcomma }}</td>
+                  <td class="prepay align-middle white-space-nowrap text-center">${{ row.Expected_Prepaid_Principal|floatformat:"2"|intcomma }}</td>
+                  <td class="recovery align-middle white-space-nowrap text-center">${{ row.Recovery|floatformat:"2"|intcomma }}</td>
+                  <td class="ecf align-middle white-space-nowrap text-center">${{ row.Expected_Cash_Flows|floatformat:"2"|intcomma }}</td>
+                  <td class="pv align-middle white-space-nowrap text-center">${{ row.PV_of_Cash_Flows|floatformat:"2"|intcomma }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+       </div>
+    </div>
+  </div>
+  <div class="card-footer">
+  </div>
+  </div>
+
+<div style="min-height: 300px;"></div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends 'cash_flow_engine/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+    <div class="card mb-3">
+        <div class="bg-holder d-none d-lg-block bg-card">
+            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url('/static/bootstrap_theme/assets/img/illustrations/corner-4.png');"></div>
+
+        </div>
+        <!--/.bg-holder-->
+
+        <div class="card-body position-relative">
+          <div class="row">
+            <div class="col-lg-8">
+                <h3>Loan Upload <small><small>[Documentation Coming Soon]</small></small></h3>
+              <p class="mb-0">The DHG Cash Flow Engine Loan Upload allows you to click or drag and drop tab-delimited loan files.</p><a class="btn btn-link btn-sm pl-0 mt-2" href="{% url 'documentation' %}" target="_blank">Documentation of Loan Upload<span class="fas fa-chevron-right ml-1 fs--2"></span></a>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="bg-holder d-none d-lg-block bg-card">
+            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url('/static/bootstrap_theme/assets/img/illustrations/corner-4.png');"></div>
+        </div>
+
+        <div class="card-body position-relative">
+          <div class="row">
+            <h5 class="mb-3">File Upload</h5>
+           <form method="post" enctype="multipart/form-data">
+
+              <div class="row mb-3">
+                <div class="col-12">
+
+                        {% csrf_token %}
+                        {{ form.filetxt }}
+
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Upload and Calculate</button>
+                </div>
+              </div>
+           </form>
+          </div>
+        </div>
+    </div>
+
+<!--    <div class="card mb-3">-->
+<!--        <div class="card-header">-->
+<!--          <h5>File Upload</h5>-->
+
+<!--        </div>-->
+<!--        <div class="card-body bg-light">-->
+<!--          <div class="row">-->
+<!--            <div class="col-12">-->
+<!--              <div class="dropzone dropzone-single p-0" data-dropzone data-options='{"url":"valid/url","maxFiles":1,"dictDefaultMessage":"Choose or Drop a file here"}'>-->
+<!--                <div class="fallback">-->
+<!--                  <input type="file" name="file">-->
+<!--                </div>-->
+<!--                <div class="dz-preview dz-preview-single">-->
+<!--                  <div class="dz-preview-cover dz-complete"><img src="{% static 'images/folder_check.png' %}" class="rounded mx-auto d-block"  width="170" alt="..." data-dz-thumbnail=""><a class="dz-remove text-danger" href="#!" data-dz-remove><span class="fas fa-times"></span></a>-->
+<!--                    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div class="dz-message" data-dz-message>-->
+<!--                  <div class="dz-message-text"><img class="mr-2" src="{% static 'bootstrap_theme/assets/img/icons/cloud-upload.svg' %}" width="25" alt="">Click or drop a file here</div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+{% if files %}
+
+
+<div class="card mb-3">
+    <div class="card-header align-items-center">
+        <div class="row align-items-center flex-row">
+          <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
+            <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Uploaded Files</h5>
+          </div>
+        </div>
+    </div>
+
+
+    <div class="card-body px-0 py-0">
+      <div class="table-responsive">
+
+          <div id="tableExample" data-list='{"valueNames":["file","date","download","delete"],"page":5,"pagination":true}'>
+            <table class="table table-sm fs--1 mb-0 table-hover table table-striped">
+              <thead class="bg-200 text-900">
+                <tr>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="file">File Name</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="date">Upload Date</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="download">Download Output</th>
+                  <th class="sort r-1 align-middle white-space-nowrap text-center" data-sort="delete">Delete</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+
+                  {% for file in files %}
+                    <tr>
+                        <td class="loan align-middle white-space-nowrap text-center"><a href="{{ file.filetxt.url }}" target="_blank" ><strong>{{ file.filetxt }}</strong></a></td>
+                      <td class="code align-middle white-space-nowrap text-center">{{ file.date }}</td>
+                      <td class="months align-middle white-space-nowrap text-center"><a href="{{ file.calculated_file.url }}" target="_blank" ><button class="btn btn-primary fs--1 btn-sm" type="submit">
+                                  Download <span class="fas fa-arrow-circle-down" data-fa-transform="shrink-3"></span></button></a></td>
+                      <td class="ecf align-middle white-space-nowrap text-center">
+                          <form method="post" action="{% url 'delete_file' file.pk %}">
+                            {% csrf_token %}
+                              <button class="btn btn-danger fs--1 btn-sm" type="submit">
+                                  Delete<span class="fas fa-trash ml-1" data-fa-transform="shrink-3"></span>
+                                </button>
+                          </form>
+                      </td>
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+
+              <div class="card-footer">
+                <div class="row align-items-center">
+                  <div class="pagination d-none"></div>
+                  <div class="col">
+                    <p class="mb-0 fs--1">
+                      <span class="d-none d-sm-inline-block mr-1" data-list-info="data-list-info"></span>
+                      <span class="d-none d-sm-inline-block"> &mdash; </span>
+                      <a class="font-weight-semi-bold" href="#!" data-list-view="*">View all<span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span></a>
+                    </p>
+                  </div>
+                  <div class="col-auto">
+                    <button class="btn btn-sm" type="button" data-list-pagination="prev"><span>Previous</span></button>
+                    <button class="btn btn-sm px-4 ml-2" type="button" data-list-pagination="next"><span>Next</span></button>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+ </div>
+
+{% endif %}
+
+
+
+{% endblock %}
